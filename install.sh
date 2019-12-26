@@ -163,9 +163,11 @@ if test -z "$DBNAME"; then
 	DBNAME="postgres"
 fi
 
+LIBGUILE_FLAGS=`pkg-config --cflags guile-2.0`
 
-CPPFLAGS="-g -Wall -fpic -c -I$PG_INCLUDEDIR $CPPFLAGS"
-LDFLAGS="-shared -lguile $LDFLAGS"
+
+CPPFLAGS="-g -Wall -fpic -c -I$PG_INCLUDEDIR $CPPFLAGS $LIBGUILE_FLAGS"
+LDFLAGS="-shared $LDFLAGS -lguile-2.0"
 PSQL="`$PG_CONFIG --bindir`/psql $PSQL_OPTS $DBNAME"
 
 echo "pg_config     : $PG_CONFIG"
@@ -262,6 +264,8 @@ cp init.scm $MODULE_DIR
 echo "  dataconv.scm -> $MODULE_DIR"
 cp dataconv.scm $MODULE_DIR
 set +e
+
+exit
 
 
 #
